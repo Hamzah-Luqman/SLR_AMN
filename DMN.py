@@ -300,17 +300,74 @@ if __name__ == '__main__':
 	
 	
     # feature extractor 
-    diFeature = {"sName" : "mobilenet",
-       "tuInputShape" : (224, 224, 3),
-       "tuOutputShape" : (1024, )} # was 1024
+    # diFeature = {"sName" : "mobilenet",
+    #     "tuInputShape" : (224, 224, 3),
+    #     "tuOutputShape" : (1024, )} # was 1024
 
+    # diFeature = {"sName" : "mobilenetV3",
+    #    "tuInputShape" : (224, 224, 3),
+    #    "tuOutputShape" : (1280, )} # was 1280
+
+
+    #diFeature = {"sName" : "InceptionResNetV2",
+    #    "tuInputShape" : (256, 256, 3),
+    #    "tuOutputShape" : (1024, )}
+    #diFeature = {"sName" : "mobilenet_scratch",
+    #    "tuInputShape" : (256, 256, 3),
+    #    "tuOutputShape" : (256, 256, 3)}
+#    diFeature = {"sName" : "xception_musign",
+#        "tuInputShape" : (299, 299, 3),
+#        "nOutput" : 2048,
+#        "tuOutputShape" : (2048, )}
+
+    #diFeature = {"sName" : "xception_musign",
+    #    "tuInputShape" : (299, 299, 3),
+    #    "nOutput" : 2048,
+    #    "tuOutputShape" : (2048, )}
+	
+    diFeature = {"sName" : "Xception",
+    "tuInputShape" : (299, 299, 3),
+    "nOutput" : 2048,
+    "tuOutputShape" : (2048, )}
+	
+    #diFeature = {"sName" : "lrcn",
+    #"tuInputShape" : (256, 256, 3),
+    #"nOutput" : 3200,
+    #"tuOutputShape" : (3200, )}
+    # diFeature = {"sName" : "EfficientNetB0",
+    # "tuInputShape" : (224, 224, 3),
+    # "nOutput" : 1280,
+    # "tuOutputShape" : (1280, ),
+    # "nClasses" : 190}
 
     # diFeature = {"sName" : "vgg16",
     #     "tuInputShape" : (224, 224, 3),
     #     "nOutput" : 512,
     #     "tuOutputShape" : (512, )}
-    
-    dataSetHomePath ='/dataset/ISA64/'	
+
+    # diFeature = {"sName" : "ResNet50",
+    #    "tuInputShape" : (224, 224, 3),
+    #    "nOutput" : 2048,
+    #    "tuOutputShape" : (2048, )}
+
+    # diFeature = {"sName" : "ResNet50",
+    #    "tuInputShape" : (224, 224, 3),
+    #    "nOutput" : 512,
+    #    "tuOutputShape" : (512, )}
+      
+    #diFeature = {"sName" : "lstm",
+    #    "tuInputShape" : (128*128),
+    #    "nOutput" : 128*128,
+    #    "tuOutputShape" : (128*128, )}
+    #diFeature = {"sName" : "lstm",
+    #    "tuInputShape" : (17),
+    #    "nOutput" : 17,
+    #    "tuOutputShape" : (17, )}
+    # dataSetHomePath ='dataset/lsa64_raw/features/18/mobilenet/color/'	
+    #dataSetHomePath ='dataset/KArSLFrames/features/18/mobilenet_v3/'	
+    #dataSetHomePath ='dataset/KArSLFrames/features/18/vgg16/'	
+    dataSetHomePath ='/dataset/features/18/xception/'
+    #dataSetHomePath ='dataset/features/18/ResNet50_2/ResNet50/'	
     sFolder_all = [None, None, None, None, None, None, None, None, None, None]*5
     sClassFile_all       = "./data/ISA_64.csv"
     sVideoDir_all        = [None, None, None, None, None, None, None, None, None, None]*5
