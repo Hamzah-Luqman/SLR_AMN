@@ -82,6 +82,30 @@ def features_2D_load_model(diFeature:dict) -> keras.Model:
 
         print(keModel.summary())
  
+    elif sModelName == "mobilenetv3":
+        # keBaseModel = tf.keras.applications.MobileNetV3Large(
+        #     weights="imagenet",
+        #     input_shape = (224, 224, 3),
+        #     include_top = True)
+         
+        # cnn_out = keBaseModel.get_layer('global_average_pooling2d').output  
+        # cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+        # cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+        # keModel = tf.keras.models.Model(keBaseModel.input, cnn_out)
+
+        keBaseModel = tf.keras.applications.MobileNetV3Large(
+            weights="imagenet",
+            input_shape = (224, 224, 3),
+            include_top = False)
+         
+        cnn_out = keBaseModel.get_layer('global_average_pooling2d').output  
+        cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+        cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+        keModel = tf.keras.models.Model(keBaseModel.input, cnn_out)
+
+
+        print(keModel.summary())
+ 
 
     elif sModelName == "inception":
 
@@ -104,15 +128,34 @@ def features_2D_load_model(diFeature:dict) -> keras.Model:
         keModel = keras.models.Model(inputs=keBaseModel.input, outputs=keBaseModel.get_layer('global_average_pooling2d_1').output, name= "VGG 16 without top layer") 
 
     elif sModelName == "ResNet50":
-
-        # load base model with top
-        #keBaseModel = ResNet50(weights="imagenet",  input_shape=(224, 224, 3), include_top=False, pooling="avg")
-		
-        #keModel = keras.models.Model(inputs=keBaseModel.input, outputs=keBaseModel.get_layer('global_average_pooling2d_1').output, name= "ResNet50 without top layer") 
-        keBaseModel = ResNet50(weights="imagenet",  input_shape=(224, 224, 3), include_top=True)
+ 
+        
+        keBaseModel = tf.keras.applications.ResNet152V2(weights="imagenet",  input_shape=(224, 224, 3),  include_top=False, pooling="avg")
         print(keBaseModel.summary())
-        keModel = keras.models.Model(inputs=keBaseModel.input, outputs=keBaseModel.get_layer('avg_pool').output, name= "ResNet50 without top layer") 
-		
+        cnn_out = keBaseModel.get_layer('avg_pool').output
+        cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+        cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+
+        ###output_final = modelOutput(preprocessed)
+        keModel = keras.models.Model(inputs=keBaseModel.input, outputs=cnn_out, name= "ResNet50WithoutTopLayer") 
+        
+
+        # keBaseModel = tf.keras.applications.ResNet152V2(weights="imagenet",  input_shape=(224, 224, 3),  include_top=False, pooling="avg")
+        # print(keBaseModel.summary())
+        # cnn_out = keBaseModel.get_layer('conv5_block2_2_relu').output
+        # cnn_out = layers.GlobalAveragePooling2D(name="avg_pool")(cnn_out)
+        # cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+        # cnn_out = keras.layers.Dropout(0.6)(cnn_out)
+
+        # ###output_final = modelOutput(preprocessed)
+        # keModel = keras.models.Model(inputs=keBaseModel.input, outputs=cnn_out, name= "ResNet50WithoutTopLayer") 
+
+
+         
+        
+        
+
+
     elif sModelName == "Xception":
 
         # load base model with top
@@ -121,7 +164,7 @@ def features_2D_load_model(diFeature:dict) -> keras.Model:
         keModel = keras.models.Model(inputs=keBaseModel.input, outputs=keBaseModel.get_layer('avg_pool').output, name= "ResNet50 without top layer") 
    
     elif sModelName == "EfficientNetB0":
-
+        ''' OLD 
         # load base model with top
         keBaseModel =  EfficientNetB0(include_top=False, input_shape=(224, 224, 3), weights="imagenet")
         
@@ -140,6 +183,12 @@ def features_2D_load_model(diFeature:dict) -> keras.Model:
         for layer in keModel.layers[-20:]:
             if not isinstance(layer, layers.BatchNormalization):
                 layer.trainable = True
+        '''
+        keBaseModel = EfficientNetB0(weights='imagenet', input_shape=(224, 224, 3), include_top=True) #, drop_connect_rate=0.4
+        # We'll extract features at the final pool layer
+        keModel = keras.models.Model(
+            inputs=keBaseModel.input,
+            outputs=keBaseModel.get_layer('avg_pool').output)     
         print(keModel.summary())
 		
     elif sModelName == "lrcn":
@@ -170,7 +219,9 @@ def features_2D_load_model(diFeature:dict) -> keras.Model:
         keModel.add(Conv1D(17, 1, input_shape=(25, 17),  activation='relu',  border_mode='same'))
         
 
-    else: raise ValueError("Unknown 2D feature extraction model")
+    else: 
+        print(sModelName)
+        raise ValueError("Unknown 2D feature extraction model")
 
     # check input & output dimensions
     tuInputShape = keModel.input_shape[1:]
