@@ -51,10 +51,10 @@ def lstm_build(nFramesNorm:int, nFeatureLength:int, nClasses:int, fDropout:float
         
         
         keModel = tf.keras.models.Sequential()
-        keModel.add(tf.keras.layers.LSTM(2024, return_sequences=True,
+        keModel.add(tf.keras.layers.GRU(2024, return_sequences=True,
             input_shape=(nFramesNorm, nFeatureLength),
             dropout=0.7))
-        keModel.add(tf.keras.layers.LSTM(2024, return_sequences=False, dropout=0.7))
+        keModel.add(tf.keras.layers.GRU(2024, return_sequences=False, dropout=0.7))
         
         keModel.add(tf.keras.layers.Flatten())
         keModel.add(tf.keras.layers.Dense(1024, activation='relu'))
